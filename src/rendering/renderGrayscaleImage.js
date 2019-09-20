@@ -116,8 +116,9 @@ export function renderGrayscaleImage (enabledElement, invalidated) {
   const sy = enabledElement.viewport.displayedArea.tlhc.y - 1;
   const width = enabledElement.viewport.displayedArea.brhc.x - sx;
   const height = enabledElement.viewport.displayedArea.brhc.y - sy;
+  const ratio = enabledElement.viewport.ratio || 1.0
 
-  context.drawImage(renderCanvas, sx, sy, width, height, 0, 0, width, height);
+  context.drawImage(renderCanvas, sx, sy, width, height * ratio, 0, 0, width, height);
 
   enabledElement.renderingTools = saveLastRendered(enabledElement);
 }

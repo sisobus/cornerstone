@@ -1,4 +1,4 @@
-/*! cornerstone-core - 2.2.8 - 2019-01-23 | (c) 2016 Chris Hafey | https://github.com/cornerstonejs/cornerstone */
+/*! cornerstone-core - 2.2.8 - 2019-09-20 | (c) 2016 Chris Hafey | https://github.com/cornerstonejs/cornerstone */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -74,7 +74,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "11aff1fb78e882526746";
+/******/ 	var hotCurrentHash = "395eee06a35fdb57b8aa";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -358,7 +358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			var outdatedModules = [updateModuleId];
 /******/ 			var outdatedDependencies = {};
 /******/
-/******/ 			var queue = outdatedModules.slice().map(function(id) {
+/******/ 			var queue = outdatedModules.map(function(id) {
 /******/ 				return {
 /******/ 					chain: [id],
 /******/ 					id: id
@@ -535,12 +535,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			moduleId = outdatedModules[i];
 /******/ 			if (
 /******/ 				installedModules[moduleId] &&
-/******/ 				installedModules[moduleId].hot._selfAccepted
-/******/ 			)
+/******/ 				installedModules[moduleId].hot._selfAccepted &&
+/******/ 				// removed self-accepted modules should not be required
+/******/ 				appliedUpdate[moduleId] !== warnUnexpectedRequire
+/******/ 			) {
 /******/ 				outdatedSelfAcceptedModules.push({
 /******/ 					module: moduleId,
 /******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
 /******/ 				});
+/******/ 			}
 /******/ 		}
 /******/
 /******/ 		// Now in "dispose" phase
@@ -607,7 +610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			}
 /******/ 		}
 /******/
-/******/ 		// Not in "apply" phase
+/******/ 		// Now in "apply" phase
 /******/ 		hotSetStatus("apply");
 /******/
 /******/ 		hotCurrentHash = hotUpdateNewHash;
@@ -3460,193 +3463,196 @@ function registerUnknownImageLoader(imageLoader) {
 /*!******************!*\
   !*** ./index.js ***!
   \******************/
-/*! exports provided: drawImage, generateLut, getDefaultViewport, requestAnimationFrame, storedPixelDataToCanvasImageData, storedColorPixelDataToCanvasImageData, storedPixelDataToCanvasImageDataColorLUT, storedPixelDataToCanvasImageDataPseudocolorLUT, internal, renderLabelMapImage, renderPseudoColorImage, renderColorImage, renderGrayscaleImage, renderWebImage, renderToCanvas, canvasToPixel, disable, displayImage, draw, drawInvalidated, enable, getElementData, removeElementData, getEnabledElement, addEnabledElement, getEnabledElementsByImageId, getEnabledElements, addLayer, removeLayer, getLayer, getLayers, getVisibleLayers, setActiveLayer, getActiveLayer, purgeLayers, setLayerImage, fitToWindow, getDefaultViewportForImage, getImage, getPixels, getStoredPixels, getViewport, loadImage, loadAndCacheImage, registerImageLoader, registerUnknownImageLoader, invalidate, invalidateImageId, pageToPixel, pixelToCanvas, reset, resize, setToPixelCoordinateSystem, setViewport, updateImage, pixelDataToFalseColorData, rendering, imageCache, metaData, webGL, colors, convertImageToFalseColorImage, convertToFalseColorImage, restoreImage, EVENTS, events, triggerEvent, default */
+/*! exports provided: drawImage, generateLut, getDefaultViewport, setDefaultViewport, requestAnimationFrame, storedPixelDataToCanvasImageData, storedColorPixelDataToCanvasImageData, storedPixelDataToCanvasImageDataColorLUT, storedPixelDataToCanvasImageDataPseudocolorLUT, internal, renderLabelMapImage, renderPseudoColorImage, renderColorImage, renderGrayscaleImage, renderWebImage, renderToCanvas, canvasToPixel, disable, displayImage, draw, drawInvalidated, enable, getElementData, removeElementData, getEnabledElement, addEnabledElement, getEnabledElementsByImageId, getEnabledElements, addLayer, removeLayer, getLayer, getLayers, getVisibleLayers, setActiveLayer, getActiveLayer, purgeLayers, setLayerImage, fitToWindow, getDefaultViewportForImage, getImage, getPixels, getStoredPixels, getViewport, loadImage, loadAndCacheImage, registerImageLoader, registerUnknownImageLoader, invalidate, invalidateImageId, pageToPixel, pixelToCanvas, reset, resize, setToPixelCoordinateSystem, setViewport, updateImage, pixelDataToFalseColorData, rendering, imageCache, metaData, webGL, colors, convertImageToFalseColorImage, convertToFalseColorImage, restoreImage, EVENTS, events, triggerEvent, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _internal_drawImage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./internal/drawImage.js */ "./internal/drawImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawImage", function() { return _internal_drawImage_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _events_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./events.js */ "./events.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EVENTS", function() { return _events_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony import */ var _internal_generateLut_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./internal/generateLut.js */ "./internal/generateLut.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateLut", function() { return _internal_generateLut_js__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "events", function() { return _events_js__WEBPACK_IMPORTED_MODULE_0__["events"]; });
 
-/* harmony import */ var _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./internal/getDefaultViewport.js */ "./internal/getDefaultViewport.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDefaultViewport", function() { return _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony import */ var _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./enabledElements.js */ "./enabledElements.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEnabledElement", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElement"]; });
 
-/* harmony import */ var _internal_requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./internal/requestAnimationFrame.js */ "./internal/requestAnimationFrame.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "requestAnimationFrame", function() { return _internal_requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addEnabledElement", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["addEnabledElement"]; });
 
-/* harmony import */ var _internal_storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./internal/storedPixelDataToCanvasImageData.js */ "./internal/storedPixelDataToCanvasImageData.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedPixelDataToCanvasImageData", function() { return _internal_storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEnabledElementsByImageId", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElementsByImageId"]; });
 
-/* harmony import */ var _internal_storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./internal/storedColorPixelDataToCanvasImageData.js */ "./internal/storedColorPixelDataToCanvasImageData.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedColorPixelDataToCanvasImageData", function() { return _internal_storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEnabledElements", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElements"]; });
 
-/* harmony import */ var _internal_storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./internal/storedPixelDataToCanvasImageDataColorLUT.js */ "./internal/storedPixelDataToCanvasImageDataColorLUT.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedPixelDataToCanvasImageDataColorLUT", function() { return _internal_storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+/* harmony import */ var _layers_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layers.js */ "./layers.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["addLayer"]; });
 
-/* harmony import */ var _internal_storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./internal/storedPixelDataToCanvasImageDataPseudocolorLUT.js */ "./internal/storedPixelDataToCanvasImageDataPseudocolorLUT.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedPixelDataToCanvasImageDataPseudocolorLUT", function() { return _internal_storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["removeLayer"]; });
 
-/* harmony import */ var _internal_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./internal/index.js */ "./internal/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "internal", function() { return _internal_index_js__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["getLayer"]; });
 
-/* harmony import */ var _rendering_renderLabelMapImage_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./rendering/renderLabelMapImage.js */ "./rendering/renderLabelMapImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderLabelMapImage", function() { return _rendering_renderLabelMapImage_js__WEBPACK_IMPORTED_MODULE_9__["renderLabelMapImage"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLayers", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["getLayers"]; });
 
-/* harmony import */ var _rendering_renderPseudoColorImage_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./rendering/renderPseudoColorImage.js */ "./rendering/renderPseudoColorImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderPseudoColorImage", function() { return _rendering_renderPseudoColorImage_js__WEBPACK_IMPORTED_MODULE_10__["renderPseudoColorImage"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getVisibleLayers", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["getVisibleLayers"]; });
 
-/* harmony import */ var _rendering_renderColorImage_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./rendering/renderColorImage.js */ "./rendering/renderColorImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderColorImage", function() { return _rendering_renderColorImage_js__WEBPACK_IMPORTED_MODULE_11__["renderColorImage"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setActiveLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["setActiveLayer"]; });
 
-/* harmony import */ var _rendering_renderGrayscaleImage_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./rendering/renderGrayscaleImage.js */ "./rendering/renderGrayscaleImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderGrayscaleImage", function() { return _rendering_renderGrayscaleImage_js__WEBPACK_IMPORTED_MODULE_12__["renderGrayscaleImage"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getActiveLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["getActiveLayer"]; });
 
-/* harmony import */ var _rendering_renderWebImage_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./rendering/renderWebImage.js */ "./rendering/renderWebImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderWebImage", function() { return _rendering_renderWebImage_js__WEBPACK_IMPORTED_MODULE_13__["renderWebImage"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "purgeLayers", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["purgeLayers"]; });
 
-/* harmony import */ var _rendering_renderToCanvas_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./rendering/renderToCanvas.js */ "./rendering/renderToCanvas.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderToCanvas", function() { return _rendering_renderToCanvas_js__WEBPACK_IMPORTED_MODULE_14__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setLayerImage", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_2__["setLayerImage"]; });
 
-/* harmony import */ var _canvasToPixel_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./canvasToPixel.js */ "./canvasToPixel.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canvasToPixel", function() { return _canvasToPixel_js__WEBPACK_IMPORTED_MODULE_15__["default"]; });
+/* harmony import */ var _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./falseColorMapping.js */ "./falseColorMapping.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "convertImageToFalseColorImage", function() { return _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__["convertImageToFalseColorImage"]; });
 
-/* harmony import */ var _disable_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./disable.js */ "./disable.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "disable", function() { return _disable_js__WEBPACK_IMPORTED_MODULE_16__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "convertToFalseColorImage", function() { return _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__["convertToFalseColorImage"]; });
 
-/* harmony import */ var _displayImage_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./displayImage.js */ "./displayImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "displayImage", function() { return _displayImage_js__WEBPACK_IMPORTED_MODULE_17__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "restoreImage", function() { return _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__["restoreImage"]; });
 
-/* harmony import */ var _draw_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./draw.js */ "./draw.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "draw", function() { return _draw_js__WEBPACK_IMPORTED_MODULE_18__["default"]; });
+/* harmony import */ var _enabledElementData_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./enabledElementData.js */ "./enabledElementData.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getElementData", function() { return _enabledElementData_js__WEBPACK_IMPORTED_MODULE_4__["getElementData"]; });
 
-/* harmony import */ var _drawInvalidated_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./drawInvalidated.js */ "./drawInvalidated.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawInvalidated", function() { return _drawInvalidated_js__WEBPACK_IMPORTED_MODULE_19__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeElementData", function() { return _enabledElementData_js__WEBPACK_IMPORTED_MODULE_4__["removeElementData"]; });
 
-/* harmony import */ var _enable_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./enable.js */ "./enable.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "enable", function() { return _enable_js__WEBPACK_IMPORTED_MODULE_20__["default"]; });
+/* harmony import */ var _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./imageLoader.js */ "./imageLoader.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadImage", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["loadImage"]; });
 
-/* harmony import */ var _enabledElementData_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./enabledElementData.js */ "./enabledElementData.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getElementData", function() { return _enabledElementData_js__WEBPACK_IMPORTED_MODULE_21__["getElementData"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadAndCacheImage", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["loadAndCacheImage"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeElementData", function() { return _enabledElementData_js__WEBPACK_IMPORTED_MODULE_21__["removeElementData"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "registerImageLoader", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["registerImageLoader"]; });
 
-/* harmony import */ var _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./enabledElements.js */ "./enabledElements.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEnabledElement", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["getEnabledElement"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "registerUnknownImageLoader", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["registerUnknownImageLoader"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addEnabledElement", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["addEnabledElement"]; });
+/* harmony import */ var _canvasToPixel_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./canvasToPixel.js */ "./canvasToPixel.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canvasToPixel", function() { return _canvasToPixel_js__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEnabledElementsByImageId", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["getEnabledElementsByImageId"]; });
+/* harmony import */ var _colors_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./colors/index.js */ "./colors/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "colors", function() { return _colors_index_js__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEnabledElements", function() { return _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["getEnabledElements"]; });
+/* harmony import */ var _disable_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./disable.js */ "./disable.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "disable", function() { return _disable_js__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _layers_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./layers.js */ "./layers.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["addLayer"]; });
+/* harmony import */ var _displayImage_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./displayImage.js */ "./displayImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "displayImage", function() { return _displayImage_js__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["removeLayer"]; });
+/* harmony import */ var _draw_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./draw.js */ "./draw.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "draw", function() { return _draw_js__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["getLayer"]; });
+/* harmony import */ var _internal_drawImage_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./internal/drawImage.js */ "./internal/drawImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawImage", function() { return _internal_drawImage_js__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLayers", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["getLayers"]; });
+/* harmony import */ var _drawInvalidated_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./drawInvalidated.js */ "./drawInvalidated.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawInvalidated", function() { return _drawInvalidated_js__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getVisibleLayers", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["getVisibleLayers"]; });
+/* harmony import */ var _enable_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./enable.js */ "./enable.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "enable", function() { return _enable_js__WEBPACK_IMPORTED_MODULE_13__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setActiveLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["setActiveLayer"]; });
+/* harmony import */ var _fitToWindow_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./fitToWindow.js */ "./fitToWindow.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "fitToWindow", function() { return _fitToWindow_js__WEBPACK_IMPORTED_MODULE_14__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getActiveLayer", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["getActiveLayer"]; });
+/* harmony import */ var _internal_generateLut_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./internal/generateLut.js */ "./internal/generateLut.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateLut", function() { return _internal_generateLut_js__WEBPACK_IMPORTED_MODULE_15__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "purgeLayers", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["purgeLayers"]; });
+/* harmony import */ var _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./internal/getDefaultViewport.js */ "./internal/getDefaultViewport.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDefaultViewport", function() { return _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_16__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setLayerImage", function() { return _layers_js__WEBPACK_IMPORTED_MODULE_23__["setLayerImage"]; });
+/* harmony import */ var _getDefaultViewportForImage_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./getDefaultViewportForImage.js */ "./getDefaultViewportForImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDefaultViewportForImage", function() { return _getDefaultViewportForImage_js__WEBPACK_IMPORTED_MODULE_17__["default"]; });
 
-/* harmony import */ var _fitToWindow_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./fitToWindow.js */ "./fitToWindow.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "fitToWindow", function() { return _fitToWindow_js__WEBPACK_IMPORTED_MODULE_24__["default"]; });
+/* harmony import */ var _getImage_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./getImage.js */ "./getImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getImage", function() { return _getImage_js__WEBPACK_IMPORTED_MODULE_18__["default"]; });
 
-/* harmony import */ var _getDefaultViewportForImage_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./getDefaultViewportForImage.js */ "./getDefaultViewportForImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDefaultViewportForImage", function() { return _getDefaultViewportForImage_js__WEBPACK_IMPORTED_MODULE_25__["default"]; });
+/* harmony import */ var _getPixels_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./getPixels.js */ "./getPixels.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getPixels", function() { return _getPixels_js__WEBPACK_IMPORTED_MODULE_19__["default"]; });
 
-/* harmony import */ var _getImage_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./getImage.js */ "./getImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getImage", function() { return _getImage_js__WEBPACK_IMPORTED_MODULE_26__["default"]; });
+/* harmony import */ var _getStoredPixels_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./getStoredPixels.js */ "./getStoredPixels.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getStoredPixels", function() { return _getStoredPixels_js__WEBPACK_IMPORTED_MODULE_20__["default"]; });
 
-/* harmony import */ var _getPixels_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./getPixels.js */ "./getPixels.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getPixels", function() { return _getPixels_js__WEBPACK_IMPORTED_MODULE_27__["default"]; });
+/* harmony import */ var _getViewport_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./getViewport.js */ "./getViewport.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getViewport", function() { return _getViewport_js__WEBPACK_IMPORTED_MODULE_21__["default"]; });
 
-/* harmony import */ var _getStoredPixels_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./getStoredPixels.js */ "./getStoredPixels.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getStoredPixels", function() { return _getStoredPixels_js__WEBPACK_IMPORTED_MODULE_28__["default"]; });
+/* harmony import */ var _imageCache_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./imageCache.js */ "./imageCache.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "imageCache", function() { return _imageCache_js__WEBPACK_IMPORTED_MODULE_22__["default"]; });
 
-/* harmony import */ var _getViewport_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./getViewport.js */ "./getViewport.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getViewport", function() { return _getViewport_js__WEBPACK_IMPORTED_MODULE_29__["default"]; });
+/* harmony import */ var _internal_index_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./internal/index.js */ "./internal/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "internal", function() { return _internal_index_js__WEBPACK_IMPORTED_MODULE_23__["default"]; });
 
-/* harmony import */ var _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./imageLoader.js */ "./imageLoader.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadImage", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["loadImage"]; });
+/* harmony import */ var _invalidate_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./invalidate.js */ "./invalidate.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "invalidate", function() { return _invalidate_js__WEBPACK_IMPORTED_MODULE_24__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadAndCacheImage", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["loadAndCacheImage"]; });
+/* harmony import */ var _invalidateImageId_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./invalidateImageId.js */ "./invalidateImageId.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "invalidateImageId", function() { return _invalidateImageId_js__WEBPACK_IMPORTED_MODULE_25__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "registerImageLoader", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["registerImageLoader"]; });
+/* harmony import */ var _metaData_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./metaData.js */ "./metaData.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "metaData", function() { return _metaData_js__WEBPACK_IMPORTED_MODULE_26__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "registerUnknownImageLoader", function() { return _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["registerUnknownImageLoader"]; });
+/* harmony import */ var _pageToPixel_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./pageToPixel.js */ "./pageToPixel.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pageToPixel", function() { return _pageToPixel_js__WEBPACK_IMPORTED_MODULE_27__["default"]; });
 
-/* harmony import */ var _invalidate_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./invalidate.js */ "./invalidate.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "invalidate", function() { return _invalidate_js__WEBPACK_IMPORTED_MODULE_31__["default"]; });
+/* harmony import */ var _pixelDataToFalseColorData_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./pixelDataToFalseColorData.js */ "./pixelDataToFalseColorData.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelDataToFalseColorData", function() { return _pixelDataToFalseColorData_js__WEBPACK_IMPORTED_MODULE_28__["default"]; });
 
-/* harmony import */ var _invalidateImageId_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./invalidateImageId.js */ "./invalidateImageId.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "invalidateImageId", function() { return _invalidateImageId_js__WEBPACK_IMPORTED_MODULE_32__["default"]; });
+/* harmony import */ var _pixelToCanvas_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./pixelToCanvas.js */ "./pixelToCanvas.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelToCanvas", function() { return _pixelToCanvas_js__WEBPACK_IMPORTED_MODULE_29__["default"]; });
 
-/* harmony import */ var _pageToPixel_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./pageToPixel.js */ "./pageToPixel.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pageToPixel", function() { return _pageToPixel_js__WEBPACK_IMPORTED_MODULE_33__["default"]; });
+/* harmony import */ var _rendering_renderColorImage_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./rendering/renderColorImage.js */ "./rendering/renderColorImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderColorImage", function() { return _rendering_renderColorImage_js__WEBPACK_IMPORTED_MODULE_30__["renderColorImage"]; });
 
-/* harmony import */ var _pixelToCanvas_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./pixelToCanvas.js */ "./pixelToCanvas.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelToCanvas", function() { return _pixelToCanvas_js__WEBPACK_IMPORTED_MODULE_34__["default"]; });
+/* harmony import */ var _rendering_renderGrayscaleImage_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./rendering/renderGrayscaleImage.js */ "./rendering/renderGrayscaleImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderGrayscaleImage", function() { return _rendering_renderGrayscaleImage_js__WEBPACK_IMPORTED_MODULE_31__["renderGrayscaleImage"]; });
 
-/* harmony import */ var _reset_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./reset.js */ "./reset.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "reset", function() { return _reset_js__WEBPACK_IMPORTED_MODULE_35__["default"]; });
+/* harmony import */ var _rendering_renderLabelMapImage_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./rendering/renderLabelMapImage.js */ "./rendering/renderLabelMapImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderLabelMapImage", function() { return _rendering_renderLabelMapImage_js__WEBPACK_IMPORTED_MODULE_32__["renderLabelMapImage"]; });
 
-/* harmony import */ var _resize_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./resize.js */ "./resize.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resize", function() { return _resize_js__WEBPACK_IMPORTED_MODULE_36__["default"]; });
+/* harmony import */ var _rendering_renderPseudoColorImage_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./rendering/renderPseudoColorImage.js */ "./rendering/renderPseudoColorImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderPseudoColorImage", function() { return _rendering_renderPseudoColorImage_js__WEBPACK_IMPORTED_MODULE_33__["renderPseudoColorImage"]; });
 
-/* harmony import */ var _setToPixelCoordinateSystem_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./setToPixelCoordinateSystem.js */ "./setToPixelCoordinateSystem.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setToPixelCoordinateSystem", function() { return _setToPixelCoordinateSystem_js__WEBPACK_IMPORTED_MODULE_37__["default"]; });
+/* harmony import */ var _rendering_renderToCanvas_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./rendering/renderToCanvas.js */ "./rendering/renderToCanvas.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderToCanvas", function() { return _rendering_renderToCanvas_js__WEBPACK_IMPORTED_MODULE_34__["default"]; });
 
-/* harmony import */ var _setViewport_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./setViewport.js */ "./setViewport.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setViewport", function() { return _setViewport_js__WEBPACK_IMPORTED_MODULE_38__["default"]; });
+/* harmony import */ var _rendering_renderWebImage_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./rendering/renderWebImage.js */ "./rendering/renderWebImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderWebImage", function() { return _rendering_renderWebImage_js__WEBPACK_IMPORTED_MODULE_35__["renderWebImage"]; });
 
-/* harmony import */ var _updateImage_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./updateImage.js */ "./updateImage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateImage", function() { return _updateImage_js__WEBPACK_IMPORTED_MODULE_39__["default"]; });
+/* harmony import */ var _rendering_index_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./rendering/index.js */ "./rendering/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "rendering", function() { return _rendering_index_js__WEBPACK_IMPORTED_MODULE_36__["default"]; });
 
-/* harmony import */ var _pixelDataToFalseColorData_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./pixelDataToFalseColorData.js */ "./pixelDataToFalseColorData.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pixelDataToFalseColorData", function() { return _pixelDataToFalseColorData_js__WEBPACK_IMPORTED_MODULE_40__["default"]; });
+/* harmony import */ var _internal_requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./internal/requestAnimationFrame.js */ "./internal/requestAnimationFrame.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "requestAnimationFrame", function() { return _internal_requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_37__["default"]; });
 
-/* harmony import */ var _rendering_index_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./rendering/index.js */ "./rendering/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "rendering", function() { return _rendering_index_js__WEBPACK_IMPORTED_MODULE_41__["default"]; });
+/* harmony import */ var _reset_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./reset.js */ "./reset.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "reset", function() { return _reset_js__WEBPACK_IMPORTED_MODULE_38__["default"]; });
 
-/* harmony import */ var _imageCache_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./imageCache.js */ "./imageCache.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "imageCache", function() { return _imageCache_js__WEBPACK_IMPORTED_MODULE_42__["default"]; });
+/* harmony import */ var _resize_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./resize.js */ "./resize.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resize", function() { return _resize_js__WEBPACK_IMPORTED_MODULE_39__["default"]; });
 
-/* harmony import */ var _metaData_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./metaData.js */ "./metaData.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "metaData", function() { return _metaData_js__WEBPACK_IMPORTED_MODULE_43__["default"]; });
+/* harmony import */ var _internal_setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./internal/setDefaultViewport.js */ "./internal/setDefaultViewport.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setDefaultViewport", function() { return _internal_setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_40__["default"]; });
 
-/* harmony import */ var _webgl_index_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./webgl/index.js */ "./webgl/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "webGL", function() { return _webgl_index_js__WEBPACK_IMPORTED_MODULE_44__["default"]; });
+/* harmony import */ var _setToPixelCoordinateSystem_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./setToPixelCoordinateSystem.js */ "./setToPixelCoordinateSystem.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setToPixelCoordinateSystem", function() { return _setToPixelCoordinateSystem_js__WEBPACK_IMPORTED_MODULE_41__["default"]; });
 
-/* harmony import */ var _colors_index_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./colors/index.js */ "./colors/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "colors", function() { return _colors_index_js__WEBPACK_IMPORTED_MODULE_45__["default"]; });
+/* harmony import */ var _setViewport_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./setViewport.js */ "./setViewport.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setViewport", function() { return _setViewport_js__WEBPACK_IMPORTED_MODULE_42__["default"]; });
 
-/* harmony import */ var _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./falseColorMapping.js */ "./falseColorMapping.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "convertImageToFalseColorImage", function() { return _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__["convertImageToFalseColorImage"]; });
+/* harmony import */ var _internal_storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./internal/storedColorPixelDataToCanvasImageData.js */ "./internal/storedColorPixelDataToCanvasImageData.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedColorPixelDataToCanvasImageData", function() { return _internal_storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_43__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "convertToFalseColorImage", function() { return _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__["convertToFalseColorImage"]; });
+/* harmony import */ var _internal_storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./internal/storedPixelDataToCanvasImageData.js */ "./internal/storedPixelDataToCanvasImageData.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedPixelDataToCanvasImageData", function() { return _internal_storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_44__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "restoreImage", function() { return _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__["restoreImage"]; });
+/* harmony import */ var _internal_storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./internal/storedPixelDataToCanvasImageDataColorLUT.js */ "./internal/storedPixelDataToCanvasImageDataColorLUT.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedPixelDataToCanvasImageDataColorLUT", function() { return _internal_storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_45__["default"]; });
 
-/* harmony import */ var _events_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./events.js */ "./events.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EVENTS", function() { return _events_js__WEBPACK_IMPORTED_MODULE_47__["default"]; });
+/* harmony import */ var _internal_storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./internal/storedPixelDataToCanvasImageDataPseudocolorLUT.js */ "./internal/storedPixelDataToCanvasImageDataPseudocolorLUT.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storedPixelDataToCanvasImageDataPseudocolorLUT", function() { return _internal_storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_46__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "events", function() { return _events_js__WEBPACK_IMPORTED_MODULE_47__["events"]; });
+/* harmony import */ var _triggerEvent_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./triggerEvent.js */ "./triggerEvent.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "triggerEvent", function() { return _triggerEvent_js__WEBPACK_IMPORTED_MODULE_47__["default"]; });
 
-/* harmony import */ var _triggerEvent_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./triggerEvent.js */ "./triggerEvent.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "triggerEvent", function() { return _triggerEvent_js__WEBPACK_IMPORTED_MODULE_48__["default"]; });
+/* harmony import */ var _updateImage_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./updateImage.js */ "./updateImage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateImage", function() { return _updateImage_js__WEBPACK_IMPORTED_MODULE_48__["default"]; });
+
+/* harmony import */ var _webgl_index_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./webgl/index.js */ "./webgl/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "webGL", function() { return _webgl_index_js__WEBPACK_IMPORTED_MODULE_49__["default"]; });
 
 // Internal (some of these are from old internal/legacy expose)
 
@@ -3657,13 +3663,48 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  // Rendering
-
-
-
-
-
-
 
 /**
  * @module PixelCoordinateSystem
@@ -3673,108 +3714,75 @@ __webpack_require__.r(__webpack_exports__);
  * @module ViewportSettings
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var cornerstone = {
-  drawImage: _internal_drawImage_js__WEBPACK_IMPORTED_MODULE_0__["default"],
-  generateLut: _internal_generateLut_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-  getDefaultViewport: _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-  requestAnimationFrame: _internal_requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-  storedPixelDataToCanvasImageData: _internal_storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-  storedColorPixelDataToCanvasImageData: _internal_storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-  storedPixelDataToCanvasImageDataColorLUT: _internal_storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-  storedPixelDataToCanvasImageDataPseudocolorLUT: _internal_storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-  internal: _internal_index_js__WEBPACK_IMPORTED_MODULE_8__["default"],
-  renderLabelMapImage: _rendering_renderLabelMapImage_js__WEBPACK_IMPORTED_MODULE_9__["renderLabelMapImage"],
-  renderPseudoColorImage: _rendering_renderPseudoColorImage_js__WEBPACK_IMPORTED_MODULE_10__["renderPseudoColorImage"],
-  renderColorImage: _rendering_renderColorImage_js__WEBPACK_IMPORTED_MODULE_11__["renderColorImage"],
-  renderGrayscaleImage: _rendering_renderGrayscaleImage_js__WEBPACK_IMPORTED_MODULE_12__["renderGrayscaleImage"],
-  renderWebImage: _rendering_renderWebImage_js__WEBPACK_IMPORTED_MODULE_13__["renderWebImage"],
-  renderToCanvas: _rendering_renderToCanvas_js__WEBPACK_IMPORTED_MODULE_14__["default"],
-  canvasToPixel: _canvasToPixel_js__WEBPACK_IMPORTED_MODULE_15__["default"],
-  disable: _disable_js__WEBPACK_IMPORTED_MODULE_16__["default"],
-  displayImage: _displayImage_js__WEBPACK_IMPORTED_MODULE_17__["default"],
-  draw: _draw_js__WEBPACK_IMPORTED_MODULE_18__["default"],
-  drawInvalidated: _drawInvalidated_js__WEBPACK_IMPORTED_MODULE_19__["default"],
-  enable: _enable_js__WEBPACK_IMPORTED_MODULE_20__["default"],
-  getElementData: _enabledElementData_js__WEBPACK_IMPORTED_MODULE_21__["getElementData"],
-  removeElementData: _enabledElementData_js__WEBPACK_IMPORTED_MODULE_21__["removeElementData"],
-  getEnabledElement: _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["getEnabledElement"],
-  addEnabledElement: _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["addEnabledElement"],
-  getEnabledElementsByImageId: _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["getEnabledElementsByImageId"],
-  getEnabledElements: _enabledElements_js__WEBPACK_IMPORTED_MODULE_22__["getEnabledElements"],
-  addLayer: _layers_js__WEBPACK_IMPORTED_MODULE_23__["addLayer"],
-  removeLayer: _layers_js__WEBPACK_IMPORTED_MODULE_23__["removeLayer"],
-  getLayer: _layers_js__WEBPACK_IMPORTED_MODULE_23__["getLayer"],
-  getLayers: _layers_js__WEBPACK_IMPORTED_MODULE_23__["getLayers"],
-  getVisibleLayers: _layers_js__WEBPACK_IMPORTED_MODULE_23__["getVisibleLayers"],
-  setActiveLayer: _layers_js__WEBPACK_IMPORTED_MODULE_23__["setActiveLayer"],
-  getActiveLayer: _layers_js__WEBPACK_IMPORTED_MODULE_23__["getActiveLayer"],
-  purgeLayers: _layers_js__WEBPACK_IMPORTED_MODULE_23__["purgeLayers"],
-  setLayerImage: _layers_js__WEBPACK_IMPORTED_MODULE_23__["setLayerImage"],
-  fitToWindow: _fitToWindow_js__WEBPACK_IMPORTED_MODULE_24__["default"],
-  getDefaultViewportForImage: _getDefaultViewportForImage_js__WEBPACK_IMPORTED_MODULE_25__["default"],
-  getImage: _getImage_js__WEBPACK_IMPORTED_MODULE_26__["default"],
-  getPixels: _getPixels_js__WEBPACK_IMPORTED_MODULE_27__["default"],
-  getStoredPixels: _getStoredPixels_js__WEBPACK_IMPORTED_MODULE_28__["default"],
-  getViewport: _getViewport_js__WEBPACK_IMPORTED_MODULE_29__["default"],
-  loadImage: _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["loadImage"],
-  loadAndCacheImage: _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["loadAndCacheImage"],
-  registerImageLoader: _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["registerImageLoader"],
-  registerUnknownImageLoader: _imageLoader_js__WEBPACK_IMPORTED_MODULE_30__["registerUnknownImageLoader"],
-  invalidate: _invalidate_js__WEBPACK_IMPORTED_MODULE_31__["default"],
-  invalidateImageId: _invalidateImageId_js__WEBPACK_IMPORTED_MODULE_32__["default"],
-  pageToPixel: _pageToPixel_js__WEBPACK_IMPORTED_MODULE_33__["default"],
-  pixelToCanvas: _pixelToCanvas_js__WEBPACK_IMPORTED_MODULE_34__["default"],
-  reset: _reset_js__WEBPACK_IMPORTED_MODULE_35__["default"],
-  resize: _resize_js__WEBPACK_IMPORTED_MODULE_36__["default"],
-  setToPixelCoordinateSystem: _setToPixelCoordinateSystem_js__WEBPACK_IMPORTED_MODULE_37__["default"],
-  setViewport: _setViewport_js__WEBPACK_IMPORTED_MODULE_38__["default"],
-  updateImage: _updateImage_js__WEBPACK_IMPORTED_MODULE_39__["default"],
-  pixelDataToFalseColorData: _pixelDataToFalseColorData_js__WEBPACK_IMPORTED_MODULE_40__["default"],
-  rendering: _rendering_index_js__WEBPACK_IMPORTED_MODULE_41__["default"],
-  imageCache: _imageCache_js__WEBPACK_IMPORTED_MODULE_42__["default"],
-  metaData: _metaData_js__WEBPACK_IMPORTED_MODULE_43__["default"],
-  webGL: _webgl_index_js__WEBPACK_IMPORTED_MODULE_44__["default"],
-  colors: _colors_index_js__WEBPACK_IMPORTED_MODULE_45__["default"],
-  convertImageToFalseColorImage: _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__["convertImageToFalseColorImage"],
-  convertToFalseColorImage: _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__["convertToFalseColorImage"],
-  restoreImage: _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_46__["restoreImage"],
-  EVENTS: _events_js__WEBPACK_IMPORTED_MODULE_47__["default"],
-  events: _events_js__WEBPACK_IMPORTED_MODULE_47__["events"],
-  triggerEvent: _triggerEvent_js__WEBPACK_IMPORTED_MODULE_48__["default"]
+  drawImage: _internal_drawImage_js__WEBPACK_IMPORTED_MODULE_11__["default"],
+  generateLut: _internal_generateLut_js__WEBPACK_IMPORTED_MODULE_15__["default"],
+  getDefaultViewport: _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_16__["default"],
+  requestAnimationFrame: _internal_requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_37__["default"],
+  storedPixelDataToCanvasImageData: _internal_storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_44__["default"],
+  storedColorPixelDataToCanvasImageData: _internal_storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_43__["default"],
+  storedPixelDataToCanvasImageDataColorLUT: _internal_storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_45__["default"],
+  storedPixelDataToCanvasImageDataPseudocolorLUT: _internal_storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_46__["default"],
+  internal: _internal_index_js__WEBPACK_IMPORTED_MODULE_23__["default"],
+  renderLabelMapImage: _rendering_renderLabelMapImage_js__WEBPACK_IMPORTED_MODULE_32__["renderLabelMapImage"],
+  renderPseudoColorImage: _rendering_renderPseudoColorImage_js__WEBPACK_IMPORTED_MODULE_33__["renderPseudoColorImage"],
+  renderColorImage: _rendering_renderColorImage_js__WEBPACK_IMPORTED_MODULE_30__["renderColorImage"],
+  renderGrayscaleImage: _rendering_renderGrayscaleImage_js__WEBPACK_IMPORTED_MODULE_31__["renderGrayscaleImage"],
+  renderWebImage: _rendering_renderWebImage_js__WEBPACK_IMPORTED_MODULE_35__["renderWebImage"],
+  renderToCanvas: _rendering_renderToCanvas_js__WEBPACK_IMPORTED_MODULE_34__["default"],
+  canvasToPixel: _canvasToPixel_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+  disable: _disable_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+  displayImage: _displayImage_js__WEBPACK_IMPORTED_MODULE_9__["default"],
+  draw: _draw_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+  drawInvalidated: _drawInvalidated_js__WEBPACK_IMPORTED_MODULE_12__["default"],
+  enable: _enable_js__WEBPACK_IMPORTED_MODULE_13__["default"],
+  getElementData: _enabledElementData_js__WEBPACK_IMPORTED_MODULE_4__["getElementData"],
+  removeElementData: _enabledElementData_js__WEBPACK_IMPORTED_MODULE_4__["removeElementData"],
+  getEnabledElement: _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElement"],
+  addEnabledElement: _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["addEnabledElement"],
+  getEnabledElementsByImageId: _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElementsByImageId"],
+  getEnabledElements: _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElements"],
+  addLayer: _layers_js__WEBPACK_IMPORTED_MODULE_2__["addLayer"],
+  removeLayer: _layers_js__WEBPACK_IMPORTED_MODULE_2__["removeLayer"],
+  getLayer: _layers_js__WEBPACK_IMPORTED_MODULE_2__["getLayer"],
+  getLayers: _layers_js__WEBPACK_IMPORTED_MODULE_2__["getLayers"],
+  getVisibleLayers: _layers_js__WEBPACK_IMPORTED_MODULE_2__["getVisibleLayers"],
+  setActiveLayer: _layers_js__WEBPACK_IMPORTED_MODULE_2__["setActiveLayer"],
+  getActiveLayer: _layers_js__WEBPACK_IMPORTED_MODULE_2__["getActiveLayer"],
+  purgeLayers: _layers_js__WEBPACK_IMPORTED_MODULE_2__["purgeLayers"],
+  setLayerImage: _layers_js__WEBPACK_IMPORTED_MODULE_2__["setLayerImage"],
+  fitToWindow: _fitToWindow_js__WEBPACK_IMPORTED_MODULE_14__["default"],
+  getDefaultViewportForImage: _getDefaultViewportForImage_js__WEBPACK_IMPORTED_MODULE_17__["default"],
+  setDefaultViewport: _internal_setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_40__["default"],
+  getImage: _getImage_js__WEBPACK_IMPORTED_MODULE_18__["default"],
+  getPixels: _getPixels_js__WEBPACK_IMPORTED_MODULE_19__["default"],
+  getStoredPixels: _getStoredPixels_js__WEBPACK_IMPORTED_MODULE_20__["default"],
+  getViewport: _getViewport_js__WEBPACK_IMPORTED_MODULE_21__["default"],
+  loadImage: _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["loadImage"],
+  loadAndCacheImage: _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["loadAndCacheImage"],
+  registerImageLoader: _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["registerImageLoader"],
+  registerUnknownImageLoader: _imageLoader_js__WEBPACK_IMPORTED_MODULE_5__["registerUnknownImageLoader"],
+  invalidate: _invalidate_js__WEBPACK_IMPORTED_MODULE_24__["default"],
+  invalidateImageId: _invalidateImageId_js__WEBPACK_IMPORTED_MODULE_25__["default"],
+  pageToPixel: _pageToPixel_js__WEBPACK_IMPORTED_MODULE_27__["default"],
+  pixelToCanvas: _pixelToCanvas_js__WEBPACK_IMPORTED_MODULE_29__["default"],
+  reset: _reset_js__WEBPACK_IMPORTED_MODULE_38__["default"],
+  resize: _resize_js__WEBPACK_IMPORTED_MODULE_39__["default"],
+  setToPixelCoordinateSystem: _setToPixelCoordinateSystem_js__WEBPACK_IMPORTED_MODULE_41__["default"],
+  setViewport: _setViewport_js__WEBPACK_IMPORTED_MODULE_42__["default"],
+  updateImage: _updateImage_js__WEBPACK_IMPORTED_MODULE_48__["default"],
+  pixelDataToFalseColorData: _pixelDataToFalseColorData_js__WEBPACK_IMPORTED_MODULE_28__["default"],
+  rendering: _rendering_index_js__WEBPACK_IMPORTED_MODULE_36__["default"],
+  imageCache: _imageCache_js__WEBPACK_IMPORTED_MODULE_22__["default"],
+  metaData: _metaData_js__WEBPACK_IMPORTED_MODULE_26__["default"],
+  webGL: _webgl_index_js__WEBPACK_IMPORTED_MODULE_49__["default"],
+  colors: _colors_index_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+  convertImageToFalseColorImage: _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__["convertImageToFalseColorImage"],
+  convertToFalseColorImage: _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__["convertToFalseColorImage"],
+  restoreImage: _falseColorMapping_js__WEBPACK_IMPORTED_MODULE_3__["restoreImage"],
+  EVENTS: _events_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+  events: _events_js__WEBPACK_IMPORTED_MODULE_0__["events"],
+  triggerEvent: _triggerEvent_js__WEBPACK_IMPORTED_MODULE_47__["default"]
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (cornerstone);
@@ -3927,6 +3935,79 @@ function hasVoi(viewport) {
   var hasLut = viewport.voiLUT && viewport.voiLUT.lut && viewport.voiLUT.lut.length > 0;
   return hasLut || viewport.voi.windowWidth !== undefined && viewport.voi.windowCenter !== undefined;
 }
+
+/***/ }),
+
+/***/ "./internal/createViewport.js":
+/*!************************************!*\
+  !*** ./internal/createViewport.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setDefaultViewport.js */ "./internal/setDefaultViewport.js");
+ // eslint-disable-next-line valid-jsdoc
+
+/**
+ * Creates the default displayed area.
+ * C.10.4 Displayed Area Module: This Module describes Attributes required to define a Specified Displayed Area space.
+ *
+ * @returns {tlhc: {x,y}, brhc: {x, y},rowPixelSpacing: Number, columnPixelSpacing: Number, presentationSizeMode: Number} displayedArea object
+ * @memberof Internal
+ */
+
+function createDefaultDisplayedArea() {
+  return {
+    // Top Left Hand Corner
+    tlhc: {
+      x: 1,
+      y: 1
+    },
+    // Bottom Right Hand Corner
+    brhc: {
+      x: 1,
+      y: 1
+    },
+    rowPixelSpacing: 1,
+    columnPixelSpacing: 1,
+    presentationSizeMode: 'NONE'
+  };
+}
+/**
+ * Creates a new viewport object containing default values
+ *
+ * @returns {Viewport} viewport object
+ * @memberof Internal
+ */
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var displayedArea = createDefaultDisplayedArea();
+  var initialDefaultViewport = {
+    scale: 1,
+    translation: {
+      x: 0,
+      y: 0
+    },
+    voi: {
+      windowWidth: undefined,
+      windowCenter: undefined
+    },
+    invert: false,
+    pixelReplication: false,
+    rotation: 0,
+    hflip: false,
+    vflip: false,
+    modalityLUT: undefined,
+    voiLUT: undefined,
+    colormap: undefined,
+    labelmap: false,
+    displayedArea: displayedArea
+  };
+  return Object.assign({}, initialDefaultViewport, _setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_0__["state"].viewport);
+});
 
 /***/ }),
 
@@ -4388,65 +4469,10 @@ function getCanvas(element) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _getImageFitScale_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getImageFitScale.js */ "./internal/getImageFitScale.js");
-
-/**
- * Creates a new viewport object containing default values
- *
- * @returns {Viewport} viewport object
- * @memberof Internal
- */
-
-function createViewport() {
-  var displayedArea = createDefaultDisplayedArea();
-  return {
-    scale: 1,
-    translation: {
-      x: 0,
-      y: 0
-    },
-    voi: {
-      windowWidth: undefined,
-      windowCenter: undefined
-    },
-    invert: false,
-    pixelReplication: false,
-    rotation: 0,
-    hflip: false,
-    vflip: false,
-    modalityLUT: undefined,
-    voiLUT: undefined,
-    colormap: undefined,
-    labelmap: false,
-    displayedArea: displayedArea
-  };
-}
-/**
- * Creates the default displayed area.
- * C.10.4 Displayed Area Module: This Module describes Attributes required to define a Specified Displayed Area space.
- *
- * @returns {tlhc: {x,y}, brhc: {x, y},rowPixelSpacing: Number, columnPixelSpacing: Number, presentationSizeMode: Number} displayedArea object
- * @memberof Internal
- */
+/* harmony import */ var _createViewport_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createViewport.js */ "./internal/createViewport.js");
+/* harmony import */ var _getImageFitScale_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getImageFitScale.js */ "./internal/getImageFitScale.js");
 
 
-function createDefaultDisplayedArea() {
-  return {
-    // Top Left Hand Corner
-    tlhc: {
-      x: 1,
-      y: 1
-    },
-    // Bottom Right Hand Corner
-    brhc: {
-      x: 1,
-      y: 1
-    },
-    rowPixelSpacing: 1,
-    columnPixelSpacing: 1,
-    presentationSizeMode: 'NONE'
-  };
-}
 /**
  * Creates a new viewport object containing default values for the image and canvas
  *
@@ -4456,18 +4482,17 @@ function createDefaultDisplayedArea() {
  * @memberof Internal
  */
 
-
 /* harmony default export */ __webpack_exports__["default"] = (function (canvas, image) {
   if (canvas === undefined) {
     throw new Error('getDefaultViewport: parameter canvas must not be undefined');
   }
 
   if (image === undefined) {
-    return createViewport();
+    return Object(_createViewport_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
   } // Fit image to window
 
 
-  var scale = Object(_getImageFitScale_js__WEBPACK_IMPORTED_MODULE_0__["default"])(canvas, image, 0).scaleFactor;
+  var scale = Object(_getImageFitScale_js__WEBPACK_IMPORTED_MODULE_1__["default"])(canvas, image, 0).scaleFactor;
   return {
     scale: scale,
     translation: {
@@ -4822,18 +4847,20 @@ function s4() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _drawImage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./drawImage.js */ "./internal/drawImage.js");
-/* harmony import */ var _generateLut_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./generateLut.js */ "./internal/generateLut.js");
-/* harmony import */ var _getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getDefaultViewport.js */ "./internal/getDefaultViewport.js");
-/* harmony import */ var _requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./requestAnimationFrame.js */ "./internal/requestAnimationFrame.js");
-/* harmony import */ var _storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageData.js */ "./internal/storedPixelDataToCanvasImageData.js");
-/* harmony import */ var _storedPixelDataToCanvasImageDataRGBA_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageDataRGBA.js */ "./internal/storedPixelDataToCanvasImageDataRGBA.js");
-/* harmony import */ var _storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./storedColorPixelDataToCanvasImageData.js */ "./internal/storedColorPixelDataToCanvasImageData.js");
-/* harmony import */ var _storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageDataColorLUT.js */ "./internal/storedPixelDataToCanvasImageDataColorLUT.js");
-/* harmony import */ var _storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageDataPseudocolorLUT.js */ "./internal/storedPixelDataToCanvasImageDataPseudocolorLUT.js");
-/* harmony import */ var _getTransform_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./getTransform.js */ "./internal/getTransform.js");
-/* harmony import */ var _calculateTransform_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./calculateTransform.js */ "./internal/calculateTransform.js");
-/* harmony import */ var _transform_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./transform.js */ "./internal/transform.js");
+/* harmony import */ var _transform_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./transform.js */ "./internal/transform.js");
+/* harmony import */ var _calculateTransform_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calculateTransform.js */ "./internal/calculateTransform.js");
+/* harmony import */ var _drawImage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./drawImage.js */ "./internal/drawImage.js");
+/* harmony import */ var _generateLut_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./generateLut.js */ "./internal/generateLut.js");
+/* harmony import */ var _getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getDefaultViewport.js */ "./internal/getDefaultViewport.js");
+/* harmony import */ var _getTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./getTransform.js */ "./internal/getTransform.js");
+/* harmony import */ var _requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./requestAnimationFrame.js */ "./internal/requestAnimationFrame.js");
+/* harmony import */ var _setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./setDefaultViewport.js */ "./internal/setDefaultViewport.js");
+/* harmony import */ var _storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./storedColorPixelDataToCanvasImageData.js */ "./internal/storedColorPixelDataToCanvasImageData.js");
+/* harmony import */ var _storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageData.js */ "./internal/storedPixelDataToCanvasImageData.js");
+/* harmony import */ var _storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageDataColorLUT.js */ "./internal/storedPixelDataToCanvasImageDataColorLUT.js");
+/* harmony import */ var _storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageDataPseudocolorLUT.js */ "./internal/storedPixelDataToCanvasImageDataPseudocolorLUT.js");
+/* harmony import */ var _storedPixelDataToCanvasImageDataRGBA_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./storedPixelDataToCanvasImageDataRGBA.js */ "./internal/storedPixelDataToCanvasImageDataRGBA.js");
+
 
 
 
@@ -4851,18 +4878,19 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  drawImage: _drawImage_js__WEBPACK_IMPORTED_MODULE_0__["default"],
-  generateLut: _generateLut_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-  getDefaultViewport: _getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-  requestAnimationFrame: _requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-  storedPixelDataToCanvasImageData: _storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-  storedPixelDataToCanvasImageDataRGBA: _storedPixelDataToCanvasImageDataRGBA_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-  storedPixelDataToCanvasImageDataColorLUT: _storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-  storedPixelDataToCanvasImageDataPseudocolorLUT: _storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_8__["default"],
-  storedColorPixelDataToCanvasImageData: _storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-  getTransform: _getTransform_js__WEBPACK_IMPORTED_MODULE_9__["default"],
-  calculateTransform: _calculateTransform_js__WEBPACK_IMPORTED_MODULE_10__["default"],
-  Transform: _transform_js__WEBPACK_IMPORTED_MODULE_11__["Transform"]
+  drawImage: _drawImage_js__WEBPACK_IMPORTED_MODULE_2__["default"],
+  generateLut: _generateLut_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+  getDefaultViewport: _getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+  requestAnimationFrame: _requestAnimationFrame_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+  setDefaultViewport: _setDefaultViewport_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+  storedPixelDataToCanvasImageData: _storedPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_9__["default"],
+  storedPixelDataToCanvasImageDataRGBA: _storedPixelDataToCanvasImageDataRGBA_js__WEBPACK_IMPORTED_MODULE_12__["default"],
+  storedPixelDataToCanvasImageDataColorLUT: _storedPixelDataToCanvasImageDataColorLUT_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+  storedPixelDataToCanvasImageDataPseudocolorLUT: _storedPixelDataToCanvasImageDataPseudocolorLUT_js__WEBPACK_IMPORTED_MODULE_11__["default"],
+  storedColorPixelDataToCanvasImageData: _storedColorPixelDataToCanvasImageData_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+  getTransform: _getTransform_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+  calculateTransform: _calculateTransform_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  Transform: _transform_js__WEBPACK_IMPORTED_MODULE_0__["Transform"]
 });
 
 /***/ }),
@@ -4921,6 +4949,33 @@ function requestFrame(callback) {
 /* harmony default export */ __webpack_exports__["default"] = (function (callback) {
   return window.requestAnimationFrame(callback) || window.webkitRequestAnimationFrame(callback) || window.mozRequestAnimationFrame(callback) || window.oRequestAnimationFrame(callback) || window.msRequestAnimationFrame(callback) || requestFrame(callback);
 });
+
+/***/ }),
+
+/***/ "./internal/setDefaultViewport.js":
+/*!****************************************!*\
+  !*** ./internal/setDefaultViewport.js ***!
+  \****************************************/
+/*! exports provided: default, state */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
+var state = {
+  viewport: {}
+};
+/**
+ * Sets new default values for `getDefaultViewport`
+ *
+ * @param {Object} viewport - Object that sets new default values for getDefaultViewport
+ * @returns {undefined}
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (function (viewport) {
+  state.viewport = viewport || {};
+});
+
 
 /***/ }),
 
@@ -6706,7 +6761,8 @@ function renderGrayscaleImage(enabledElement, invalidated) {
   var sy = enabledElement.viewport.displayedArea.tlhc.y - 1;
   var width = enabledElement.viewport.displayedArea.brhc.x - sx;
   var height = enabledElement.viewport.displayedArea.brhc.y - sy;
-  context.drawImage(renderCanvas, sx, sy, width, height, 0, 0, width, height);
+  var ratio = enabledElement.viewport.ratio || 1.0;
+  context.drawImage(renderCanvas, sx, sy, width, height * ratio, 0, 0, width, height);
   enabledElement.renderingTools = Object(_saveLastRendered_js__WEBPACK_IMPORTED_MODULE_8__["default"])(enabledElement);
 }
 /**
@@ -7275,8 +7331,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _enabledElements_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./enabledElements.js */ "./enabledElements.js");
-/* harmony import */ var _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./internal/getDefaultViewport.js */ "./internal/getDefaultViewport.js");
+/* harmony import */ var _internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./internal/getDefaultViewport.js */ "./internal/getDefaultViewport.js");
+/* harmony import */ var _enabledElements_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./enabledElements.js */ "./enabledElements.js");
 /* harmony import */ var _updateImage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./updateImage.js */ "./updateImage.js");
 
 
@@ -7289,8 +7345,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /* harmony default export */ __webpack_exports__["default"] = (function (element) {
-  var enabledElement = Object(_enabledElements_js__WEBPACK_IMPORTED_MODULE_0__["getEnabledElement"])(element);
-  enabledElement.viewport = Object(_internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_1__["default"])(enabledElement.canvas, enabledElement.image);
+  var enabledElement = Object(_enabledElements_js__WEBPACK_IMPORTED_MODULE_1__["getEnabledElement"])(element);
+  enabledElement.viewport = Object(_internal_getDefaultViewport_js__WEBPACK_IMPORTED_MODULE_0__["default"])(enabledElement.canvas, enabledElement.image);
   Object(_updateImage_js__WEBPACK_IMPORTED_MODULE_2__["default"])(element);
 });
 
